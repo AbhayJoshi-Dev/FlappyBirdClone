@@ -91,6 +91,8 @@ int i = 0;
 
 void GameLoop()
 {
+
+	// pipe random generation
 	srand(time(0));
 
 	for (i = 0; i < 4; i++)
@@ -107,6 +109,22 @@ void GameLoop()
 			pipe_down[i].pipeCrossed = false;
 		}
 	}
+
+	//collision of bird and pipes
+
+
+	for (i = 0; i < 4; i++)
+	{
+		if (utils::isCollide(bird, pipe_up[i]))
+		{
+			std::cout << " Bird colliding with Pipes" << std::endl;
+		}
+		else if (utils::isCollide(bird, pipe_down[i]))
+		{
+			std::cout << "Bird colliding with Pipes" << std::endl;
+		}
+	}
+
 
 	utils::GetFramesRate();
 
@@ -139,6 +157,7 @@ void GameLoop()
 			
 		}
 		accumulator -= timeStep;
+
 	}
 
 	alpha = accumulator / timeStep;

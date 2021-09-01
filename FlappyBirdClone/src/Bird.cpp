@@ -4,7 +4,7 @@ Bird::Bird(Vector p_pos, SDL_Texture* p_texture)
 	:Entity(p_pos, p_texture)
 {
 	gravity.SetX(0.0f);
-	gravity.SetY(0.009f);
+	gravity.SetY(0.009f);//0.009
 }
 
 void Bird::Update()
