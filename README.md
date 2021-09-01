@@ -11,7 +11,7 @@ Enter 'build.bat action' where action is one of the following:
   compile           Will generate make file then compile using the make file.
   clean             Remove all binaries and intermediate binaries and project files.
   codelite          Generate CodeLite project files
-  gmake2             Generate GNU makefiles for Linux
+  gmake2            Generate GNU makefiles for Linux
   vs2005            Generate Visual Studio 2005 project files
   vs2008            Generate Visual Studio 2008 project files
   vs2010            Generate Visual Studio 2010 project files
