@@ -15,6 +15,7 @@
 #include"Pipe.h"
 #include"Utils.h"
 #include"Bird.h"
+#include"Ground.h"
 
 RenderWindow window;
 
@@ -27,6 +28,8 @@ SDL_Texture* backgroundTexture = NULL;
 SDL_Texture* pipeTexture_down[4];
 SDL_Texture* pipeTexture_up[4];
 SDL_Texture* birdTexture = NULL;
+SDL_Texture* birdtexture[3] = { NULL, NULL, NULL };
+SDL_Texture* groundTexture = NULL;
 
 SDL_Event event;
 bool gameRunning = true;
@@ -39,10 +42,15 @@ float frameTime = 0.0f;
 float alpha = 0.0f;
 int startTicks;
 int frameTicks;
-const int PIPE_UP_MAX_Y = -20,
+const int PIPE_UP_MAX_Y = -10,
 PIPE_UP_MIN_Y = -50,
 PIPE_DOWN_MAX_Y = 180,
-PIPE_DOWN_MIN_Y = 150;
+PIPE_DOWN_MIN_Y = 140;
+
+float oneFlapTime = 0.3f;
+float cTime = 0.0f;
+int num = 0;
+int num2 = 0;
 
 bool Init()
 {
@@ -56,13 +64,23 @@ bool Init()
 
 	std::cout << "Refresh Rate: " << window.GetRefreshRate() << std::endl;
 
-	backgroundTexture = window.LoadTexture("res/Background.png");
+	//Loading Textures
+
+	backgroundTexture = window.LoadTexture("res/gfx/Background.png");
 	for (int i = 0; i < 4; i++)
 	{
-		pipeTexture_down[i] = window.LoadTexture("res/PipeDown.png");
-		pipeTexture_up[i] = window.LoadTexture("res/PipeUp.png");
+		pipeTexture_down[i] = window.LoadTexture("res/gfx/PipeDown.png");
+		pipeTexture_up[i] = window.LoadTexture("res/gfx/PipeUp.png");
 	}
-	birdTexture = window.LoadTexture("res/Bird1.png");
+	birdTexture = window.LoadTexture("res/gfx/Bird1.png");
+
+	birdtexture[0] = window.LoadTexture("res/gfx/Bird1.png");
+	birdtexture[1] = window.LoadTexture("res/gfx/Bird2.png");
+	birdtexture[2] = window.LoadTexture("res/gfx/Bird3.png");
+
+
+	groundTexture = window.LoadTexture("res/gfx/Ground1.png");
+
 
 	return true;
 }
@@ -72,22 +90,22 @@ bool load = Init();
 
 
 Pipe pipe_down[4] = {
-	Pipe(Vector(60, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]), //down = 180 150
-	Pipe(Vector(120, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]),
-	Pipe(Vector(180, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]),
-	Pipe(Vector(240, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0])
+	Pipe(Vector(70, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]), //down = 180 150
+	Pipe(Vector(140, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]),
+	Pipe(Vector(210, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]),
+	Pipe(Vector(280, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0])
 };
 
 Pipe pipe_up[4] = {
-	Pipe(Vector(60, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[0]), //up = -50, -20
-	Pipe(Vector(120, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[1]),
-	Pipe(Vector(180, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[2]),
-	Pipe(Vector(240, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[3])
+	Pipe(Vector(70, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[0]), //up = -50, -20
+	Pipe(Vector(140, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[1]),
+	Pipe(Vector(210, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[2]),
+	Pipe(Vector(280, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[3])
 };
 
 Bird bird(Vector(25, 96), birdTexture);
-int i = 0;
 
+//Ground ground
 
 void GameLoop()
 {
@@ -95,31 +113,31 @@ void GameLoop()
 	// pipe random generation
 	srand(time(0));
 
-	for (i = 0; i < 4; i++)
+	for (num = 0; num < 4; num++)
 	{
-		if (pipe_up[i].pipeCrossed)
+		if (pipe_up[num].pipeCrossed)
 		{
-			pipe_up[i].SetPosition(Vector(pipe_up[i].GetPosition().GetX(), utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)));
-			pipe_up[i].pipeCrossed = false;
+			pipe_up[num].SetPosition(Vector(pipe_up[num].GetPosition().GetX(), utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)));
+			pipe_up[num].pipeCrossed = false;
 		}
 
-		if (pipe_down[i].pipeCrossed)
+		if (pipe_down[num].pipeCrossed)
 		{
-			pipe_down[i].SetPosition(Vector(pipe_down[i].GetPosition().GetX(), utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)));
-			pipe_down[i].pipeCrossed = false;
+			pipe_down[num].SetPosition(Vector(pipe_down[num].GetPosition().GetX(), utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)));
+			pipe_down[num].pipeCrossed = false;
 		}
 	}
 
 	//collision of bird and pipes
 
 
-	for (i = 0; i < 4; i++)
+	for (num = 0; num < 4; num++)
 	{
-		if (utils::isCollide(bird, pipe_up[i]))
+		if (utils::isCollide(bird, pipe_up[num]))
 		{
 			std::cout << " Bird colliding with Pipes" << std::endl;
 		}
-		else if (utils::isCollide(bird, pipe_down[i]))
+		else if (utils::isCollide(bird, pipe_down[num]))
 		{
 			std::cout << "Bird colliding with Pipes" << std::endl;
 		}
@@ -178,7 +196,19 @@ void GameLoop()
 		window.Render(pipe_down[i]);
 		window.Render(pipe_up[i]);
 	}
-	window.Render(bird);//54, 96
+	//window.Render(bird);//54, 96
+
+	window.Render(groundTexture, Vector(0, 200));
+
+	if (cTime >= oneFlapTime)
+	{
+		cTime = 0.0f;
+		num2 += 1;
+		if (num2 > 2)
+			num2 = 0;
+	}
+	cTime += 0.02f;
+	window.Render(birdtexture[num2], bird.GetPosition());
 
 	window.Display();
 

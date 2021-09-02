@@ -6,11 +6,11 @@ Pipe::Pipe(Vector p_pos, SDL_Texture* p_tex)
 
 void Pipe::Update()
 {
-	SetPosition(Vector(GetPosition().GetX() - 0.20f, GetPosition().GetY()));
+	SetPosition(Vector(GetPosition().GetX() - 0.25f, GetPosition().GetY()));
 
 	if (GetPosition().GetX() <= -40)
 	{
-		SetPosition(Vector(200, GetPosition().GetY()));
+		SetPosition(Vector(240, GetPosition().GetY()));
 		pipeCrossed = true;
 	}
 }

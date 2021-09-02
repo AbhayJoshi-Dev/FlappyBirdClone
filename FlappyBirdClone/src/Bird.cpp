@@ -4,7 +4,7 @@ Bird::Bird(Vector p_pos, SDL_Texture* p_texture)
 	:Entity(p_pos, p_texture)
 {
 	gravity.SetX(0.0f);
-	gravity.SetY(0.009f);//0.009
+	gravity.SetY(0.02f);//0.009
 }
 
 void Bird::Update()
@@ -21,7 +21,7 @@ void Bird::Update()
 void Bird::Fly()
 {
 	if (velocity.GetY() >= -.8)
-		velocity.SetY(-1);
+		velocity.SetY(-0.85);
 
 	if (velocity.GetY() < -.8)
 		velocity.SetY(-.8);
