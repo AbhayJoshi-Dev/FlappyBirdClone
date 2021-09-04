@@ -18,6 +18,7 @@ public:
 	void Render(Entity& entity);
 	void Render(SDL_Texture* p_tex, Vector p_pos);
 	void Render(Entity& p_entity, Vector p_pos);
+	void RenderRotate(SDL_Texture* p_tex, Vector p_pos, float angle);
 	void Display();
 	void Clear();
 	void CleanUp();

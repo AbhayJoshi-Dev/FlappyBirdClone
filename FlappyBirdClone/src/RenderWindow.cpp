@@ -84,6 +84,22 @@ void RenderWindow::Render(Entity& p_entity, Vector p_pos)
 	SDL_RenderCopy(renderer, p_entity.GetTexture(), &src, &dst);
 }
 
+void RenderWindow::RenderRotate(SDL_Texture* p_tex, Vector p_pos, float angle)
+{
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	SDL_QueryTexture(p_tex, NULL, NULL, &src.w, &src.h);
+
+	SDL_Rect dst;
+	dst.x = p_pos.GetX() * multiplier;
+	dst.y = p_pos.GetY() * multiplier;
+	dst.w = src.w * multiplier;
+	dst.h = src.h * multiplier;
+
+	SDL_RenderCopyEx(renderer, p_tex, &src, &dst, angle, NULL, SDL_FLIP_NONE);
+}
+
 void RenderWindow::Display()
 {
 	SDL_RenderPresent(renderer);

@@ -6,7 +6,7 @@ Pipe::Pipe(Vector p_pos, SDL_Texture* p_tex)
 
 void Pipe::Update()
 {
-	SetPosition(Vector(GetPosition().GetX() - 0.25f, GetPosition().GetY()));
+	SetPosition(Vector(GetPosition().GetX() - 0.28f, GetPosition().GetY()));
 
 	if (GetPosition().GetX() <= -40)
 	{

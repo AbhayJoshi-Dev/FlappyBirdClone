@@ -25,9 +25,8 @@ const int SCREEN_HEIGHT = 768;
 const Uint8* keyState;
 
 SDL_Texture* backgroundTexture = NULL;
-SDL_Texture* pipeTexture_down[4];
-SDL_Texture* pipeTexture_up[4];
-SDL_Texture* birdTexture = NULL;
+SDL_Texture* pipeTexture_down = NULL;
+SDL_Texture* pipeTexture_up = NULL;
 SDL_Texture* birdtexture[3] = { NULL, NULL, NULL };
 SDL_Texture* groundTexture = NULL;
 
@@ -47,7 +46,7 @@ PIPE_UP_MIN_Y = -50,
 PIPE_DOWN_MAX_Y = 180,
 PIPE_DOWN_MIN_Y = 140;
 
-float oneFlapTime = 0.3f;
+float oneFlapTime = 0.2f;
 float cTime = 0.0f;
 int num = 0;
 int num2 = 0;
@@ -67,12 +66,9 @@ bool Init()
 	//Loading Textures
 
 	backgroundTexture = window.LoadTexture("res/gfx/Background.png");
-	for (int i = 0; i < 4; i++)
-	{
-		pipeTexture_down[i] = window.LoadTexture("res/gfx/PipeDown.png");
-		pipeTexture_up[i] = window.LoadTexture("res/gfx/PipeUp.png");
-	}
-	birdTexture = window.LoadTexture("res/gfx/Bird1.png");
+
+	pipeTexture_down = window.LoadTexture("res/gfx/PipeDown.png");
+	pipeTexture_up = window.LoadTexture("res/gfx/PipeUp.png");
 
 	birdtexture[0] = window.LoadTexture("res/gfx/Bird1.png");
 	birdtexture[1] = window.LoadTexture("res/gfx/Bird2.png");
@@ -90,22 +86,26 @@ bool load = Init();
 
 
 Pipe pipe_down[4] = {
-	Pipe(Vector(70, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]), //down = 180 150
-	Pipe(Vector(140, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]),
-	Pipe(Vector(210, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0]),
-	Pipe(Vector(280, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down[0])
+	Pipe(Vector(70, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down), //down = 180 150
+	Pipe(Vector(140, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(210, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(280, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down)
 };
 
 Pipe pipe_up[4] = {
-	Pipe(Vector(70, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[0]), //up = -50, -20
-	Pipe(Vector(140, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[1]),
-	Pipe(Vector(210, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[2]),
-	Pipe(Vector(280, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up[3])
+	Pipe(Vector(70, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up), //up = -50, -20
+	Pipe(Vector(140, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(210, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(280, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up)
 };
 
-Bird bird(Vector(25, 96), birdTexture);
+Ground ground[2] = {
+	Ground(Vector(0, 200), groundTexture),
+	Ground(Vector(154, 200), groundTexture)
+};
 
-//Ground ground
+Bird bird(Vector(25, 96), birdtexture[0]);
+
 
 void GameLoop()
 {
@@ -141,6 +141,10 @@ void GameLoop()
 		{
 			std::cout << "Bird colliding with Pipes" << std::endl;
 		}
+
+		if (num < 2)
+			if (utils::isCollide(bird, ground[num]))
+				std::cout << "Bird colliding with Ground" << std::endl;
 	}
 
 
@@ -180,12 +184,6 @@ void GameLoop()
 
 	alpha = accumulator / timeStep;
 
-	for (int i = 0; i < 4; i++)
-	{
-		pipe_down[i].Update();
-		pipe_up[i].Update();
-	}
-
 	bird.Update();
 	window.Clear();
 
@@ -193,12 +191,19 @@ void GameLoop()
 
 	for (int i = 0; i < 4; i++)
 	{
+		pipe_down[i].Update();
+		pipe_up[i].Update();
+
 		window.Render(pipe_down[i]);
 		window.Render(pipe_up[i]);
 	}
 	//window.Render(bird);//54, 96
 
-	window.Render(groundTexture, Vector(0, 200));
+	for (num = 0; num < 2; num++)
+	{
+		ground[num].Update();
+		window.Render(ground[num]);
+	}
 
 	if (cTime >= oneFlapTime)
 	{
@@ -208,7 +213,7 @@ void GameLoop()
 			num2 = 0;
 	}
 	cTime += 0.02f;
-	window.Render(birdtexture[num2], bird.GetPosition());
+	window.RenderRotate(birdtexture[num2], bird.GetPosition(), bird.GetAngle());
 
 	window.Display();
 
