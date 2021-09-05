@@ -22,4 +22,4 @@ Enter 'build.bat action' where action is one of the following:
   vs2019            Generate Visual Studio 2019 project files
   xcode4            Generate Apple Xcode 4 project files
 ```
-The compiled ``.exe`` is located in ``./bin``. For it to run, you must copy the ``./res`` folder as well as all ``.dll`` files from your SDL2, SDL_image installation to its directory.
+The compiled ``.exe`` is located in ``./bin``. For it to run, you must copy the ``./res`` folder to its directory.
