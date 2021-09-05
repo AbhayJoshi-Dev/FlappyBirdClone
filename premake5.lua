@@ -60,8 +60,8 @@ project "FlappyBirdClone"
 
         postbuildcommands
         {
-            "{COPYDIR} %{wks.location}/Dependencies/SDL2/lib/x64 %{cfg.targetdir}",
-            "{COPYDIR} %{wks.location}/Dependencies/SDL2_image/lib/x64 %{cfg.targetdir}"
+            "{COPYDIR} \"%{wks.location}/Dependencies/SDL2/lib/x64\" \"%{cfg.targetdir}\"",
+            "{COPYDIR} \"%{wks.location}/Dependencies/SDL2_image/lib/x64\" \"%{cfg.targetdir}\""
         }
 
     filter {"configurations:Release"}
