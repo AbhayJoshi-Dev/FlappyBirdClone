@@ -10,7 +10,7 @@ namespace utils
 	
 	inline float HireTimeInSeconds()
 	{
-		float t = SDL_GetTicks();
+		float t = (float)SDL_GetTicks();
 		t *= 0.001f;
 		return t;
 	}
@@ -18,7 +18,7 @@ namespace utils
 	inline void GetFramesRate()
 	{
 		fps++;
-		startTime = SDL_GetTicks();
+		startTime = (float)SDL_GetTicks();
 
 		if ((startTime - currentTime) > 1000.0f)
 		{

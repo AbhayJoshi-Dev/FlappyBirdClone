@@ -9,11 +9,11 @@ Bird::Bird(Vector p_pos, SDL_Texture* p_texture)
 
 void Bird::Update()
 {
-	if (velocity.GetY() <= 1.2)
+	if (velocity.GetY() <= 1.2f)
 		velocity.AddTo(gravity);
 
-	if (velocity.GetY() > 1.2)
-		velocity.SetY(1.2);
+	if (velocity.GetY() > 1.2f)
+		velocity.SetY(1.2f);
 
 	SetPosition(Vector(25, GetPosition().GetY() + velocity.GetY()));
 

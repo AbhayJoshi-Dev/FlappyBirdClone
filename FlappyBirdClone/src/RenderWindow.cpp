@@ -4,7 +4,7 @@
 
 void RenderWindow::CreateWindow(const char* p_title, float p_w, float p_h)
 {
-	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, (int)p_w, (int)p_h, SDL_WINDOW_SHOWN);
 
 	if (window == NULL)
 		std::cout << "Window failed to load. ERROR: " << SDL_GetError() << std::endl;
@@ -43,10 +43,10 @@ void RenderWindow::Render(Entity& p_entity)
 	src.h = p_entity.GetCurrentFrame().h;
 
 	SDL_Rect dst;
-	dst.x = p_entity.GetPosition().GetX() * multiplier;
-	dst.y = p_entity.GetPosition().GetY() * multiplier;
-	dst.w = p_entity.GetCurrentFrame().w * multiplier;
-	dst.h = p_entity.GetCurrentFrame().h * multiplier;
+	dst.x = (int)p_entity.GetPosition().GetX() * multiplier;
+	dst.y = (int)p_entity.GetPosition().GetY() * multiplier;
+	dst.w = (int)p_entity.GetCurrentFrame().w * multiplier;
+	dst.h = (int)p_entity.GetCurrentFrame().h * multiplier;
 
 	SDL_RenderCopy(renderer, p_entity.GetTexture(), &src, &dst);
 }
@@ -59,10 +59,10 @@ void RenderWindow::Render(SDL_Texture* p_tex, Vector p_pos)
 	SDL_QueryTexture(p_tex, NULL, NULL, &src.w, &src.h);
 
 	SDL_Rect dst;
-	dst.x = p_pos.GetX() * multiplier;
-	dst.y = p_pos.GetY() * multiplier;
-	dst.w = src.w * multiplier;
-	dst.h = src.h * multiplier;
+	dst.x = (int)p_pos.GetX() * multiplier;
+	dst.y = (int)p_pos.GetY() * multiplier;
+	dst.w = (int)src.w * multiplier;
+	dst.h = (int)src.h * multiplier;
 
 	SDL_RenderCopy(renderer, p_tex, &src, &dst);
 }
@@ -76,10 +76,10 @@ void RenderWindow::Render(Entity& p_entity, Vector p_pos)
 	src.h = p_entity.GetCurrentFrame().h;
 
 	SDL_Rect dst;
-	dst.x = p_pos.GetX() * multiplier;
-	dst.y = p_pos.GetY() * multiplier;
-	dst.w = p_entity.GetCurrentFrame().w * multiplier;
-	dst.h = p_entity.GetCurrentFrame().h * multiplier;
+	dst.x = (int)p_pos.GetX() * multiplier;
+	dst.y = (int)p_pos.GetY() * multiplier;
+	dst.w = (int)p_entity.GetCurrentFrame().w * multiplier;
+	dst.h = (int)p_entity.GetCurrentFrame().h * multiplier;
 
 	SDL_RenderCopy(renderer, p_entity.GetTexture(), &src, &dst);
 }
@@ -92,8 +92,8 @@ void RenderWindow::RenderRotate(SDL_Texture* p_tex, Vector p_pos, float angle)
 	SDL_QueryTexture(p_tex, NULL, NULL, &src.w, &src.h);
 
 	SDL_Rect dst;
-	dst.x = p_pos.GetX() * multiplier;
-	dst.y = p_pos.GetY() * multiplier;
+	dst.x = (int)p_pos.GetX() * multiplier;
+	dst.y = (int)p_pos.GetY() * multiplier;
 	dst.w = src.w * multiplier;
 	dst.h = src.h * multiplier;
 

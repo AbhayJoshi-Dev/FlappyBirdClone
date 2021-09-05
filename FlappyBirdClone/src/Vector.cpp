@@ -4,18 +4,14 @@
 
 // degrees = (radians * 180) / pi
 
-#include<math.h>
+#include <cmath>
 
-#include"Vector.h"
-
-
-Vector::Vector()
-	:x(0.0f), y(0.0f)
-{}
+#include "Vector.h"
 
 Vector::Vector(float p_x, float p_y)
-	:x(p_x), y(p_y)
-{}
+	: x(p_x), y(p_y)
+{
+}
 
 void Vector::SetX(float value)
 {
@@ -27,12 +23,12 @@ void Vector::SetY(float value)
 	y = value;
 }
 
-float Vector::GetX()
+float Vector::GetX() const
 {
 	return x;
 }
 
-float Vector::GetY()
+float Vector::GetY() const
 {
 	return y;
 }
@@ -40,47 +36,86 @@ float Vector::GetY()
 void Vector::SetAngle(float angle)
 {
 	float length = GetLength();
-	x = cos(angle) * length;
-	y = sin(angle) * length;
+	x = std::cos(angle) * length;
+	y = std::sin(angle) * length;
 }
 
-float Vector::GetAngle()
+float Vector::GetAngle() const
 {
-	return atan2(y, x);
+	return std::atan2(y, x);
 }
 
 void Vector::SetLength(float len)
 {
 	float angle = GetAngle();
-	x = cos(angle) * len;
-	y = sin(angle) * len;
+	x = std::cos(angle) * len;
+	y = std::sin(angle) * len;
 }
 
-float Vector::GetLength()
+float Vector::GetLength() const
 {
-	return sqrt((double)x * x + (double)y * y);
+	return std::sqrt(x * x + y * y);
 }
 
-void Vector::AddTo(Vector v)
+void Vector::AddTo(const Vector &v)
 {
 	x += v.x;
 	y += v.y;
 }
 
-void Vector::SubTo(Vector v)
+void Vector::SubTo(const Vector &v)
 {
 	x -= v.x;
 	y -= v.y;
 }
 
-void Vector::MulTo(float val)
+void Vector::Scale(float factor)
 {
-	x *= val;
-	y *= val;
+	x *= factor;
+	y *= factor;
 }
 
-void Vector::DivTo(float val)
+void Vector::Scale(float x, float y)
 {
-	x /= val;
-	y /= val;
+	x *= x;
+	y *= y;
+}
+
+float Vector::Dot(const Vector& other) const
+{
+	return (x * other.x + y * other.y);
+}
+
+Vector& Vector::Unitize()
+{
+	auto mag = GetLength();
+	if (mag != 0)
+	{
+		x /= mag;
+		y /= mag;
+	}
+	return *this;
+}
+
+Vector Vector::Unit() const
+{
+	auto mag = GetLength();
+	if (mag == 0)
+	{
+		return Vector();
+	}
+	else
+	{
+		return Vector(x/mag, y/mag);
+	}
+}
+
+Vector Vector::operator+(const Vector& other) const
+{
+	return Vector(x + other.x, y + other.y);
+}
+
+Vector Vector::operator-(const Vector& other) const
+{
+	return Vector(x - other.x, y - other.y);
 }
