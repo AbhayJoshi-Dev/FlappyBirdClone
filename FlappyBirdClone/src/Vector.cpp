@@ -1,9 +1,3 @@
-// sin = Opposite side to O/ Hypotenuse
-// cos = Adjacent side / Hypotenuse
-// tan = Opposite side / Adjacent side
-
-// degrees = (radians * 180) / pi
-
 #include <cmath>
 
 #include "Vector.h"

@@ -6,7 +6,7 @@ Ground::Ground(Vector p_pos, SDL_Texture* p_tex)
 
 void Ground::Update()
 {
-	SetPosition(Vector(GetPosition().GetX() - 0.28f, 200.0f));
+	SetPosition(Vector(GetPosition().GetX() - 0.32f, 200.0f));
 
 	if (GetPosition().GetX() <= -154)
 	{

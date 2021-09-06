@@ -1,9 +1,3 @@
-// sin	Opposite side to O/ Hypotenuse
-// cos	Adjacent side / Hypotenuse
-// tan	Opposite side / Adjacent side
-
-// degrees = (radians * 180) / pi
-
 #include<SDL.h>
 #include<iostream>
 #include<SDL_image.h>
@@ -29,6 +23,10 @@ SDL_Texture* pipeTexture_down = NULL;
 SDL_Texture* pipeTexture_up = NULL;
 SDL_Texture* birdtexture[3] = { NULL, NULL, NULL };
 SDL_Texture* groundTexture = NULL;
+SDL_Texture* UI_GetReadyTexture = NULL;
+SDL_Texture* UI_BirdTexture = NULL;
+SDL_Texture* UI_HandTexture = NULL;
+SDL_Texture* UI_TapTexture = NULL;
 
 SDL_Event event;
 bool gameRunning = true;
@@ -50,6 +48,7 @@ float oneFlapTime = 0.2f;
 float cTime = 0.0f;
 int num = 0;
 int num2 = 0;
+bool start = false;
 
 bool Init()
 {
@@ -74,8 +73,12 @@ bool Init()
 	birdtexture[1] = window.LoadTexture("res/gfx/Bird2.png");
 	birdtexture[2] = window.LoadTexture("res/gfx/Bird3.png");
 
-
 	groundTexture = window.LoadTexture("res/gfx/Ground1.png");
+
+	UI_GetReadyTexture = window.LoadTexture("res/gfx/GetReadyText.png");
+	UI_BirdTexture = window.LoadTexture("res/gfx/Bird4.png");
+	UI_HandTexture = window.LoadTexture("res/gfx/TutorialHand.png");
+	UI_TapTexture = window.LoadTexture("res/gfx/Tap.png");
 
 
 	return true;
@@ -86,17 +89,17 @@ bool load = Init();
 
 
 Pipe pipe_down[4] = {
-	Pipe(Vector(70.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down), //down = 180 150
-	Pipe(Vector(140.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
-	Pipe(Vector(210.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
-	Pipe(Vector(280.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down)
+	Pipe(Vector(280.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(350.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(420.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(490.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down)
 };
 
 Pipe pipe_up[4] = {
-	Pipe(Vector(70.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up), //up = -50, -20
-	Pipe(Vector(140.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
-	Pipe(Vector(210.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
-	Pipe(Vector(280.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up)
+	Pipe(Vector(280.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(350.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(420.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(490.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up)
 };
 
 Ground ground[2] = {
@@ -135,16 +138,16 @@ void GameLoop()
 	{
 		if (utils::isCollide(bird, pipe_up[num]))
 		{
-			std::cout << " Bird colliding with Pipes" << std::endl;
+			//std::cout << " Bird colliding with Pipes" << std::endl;
 		}
 		else if (utils::isCollide(bird, pipe_down[num]))
 		{
-			std::cout << "Bird colliding with Pipes" << std::endl;
+			//std::cout << "Bird colliding with Pipes" << std::endl;
 		}
 
-		if (num < 2)
-			if (utils::isCollide(bird, ground[num]))
-				std::cout << "Bird colliding with Ground" << std::endl;
+		//if (num < 2)
+			//if (utils::isCollide(bird, ground[num]))
+				//std::cout << "Bird colliding with Ground" << std::endl;
 	}
 
 
@@ -172,7 +175,11 @@ void GameLoop()
 				case SDL_MOUSEBUTTONDOWN:
 				{
 					if (event.button.button == SDL_BUTTON_LEFT)
+					{
 						bird.Fly();
+						if (!start)
+							start = true;
+					}
 					break;
 				}
 			}
@@ -184,20 +191,39 @@ void GameLoop()
 
 	alpha = accumulator / timeStep;
 
-	bird.Update();
 	window.Clear();
 
 	window.Render(backgroundTexture, Vector(0, 0));
 
-	for (int i = 0; i < 4; i++)
+	if (start)
 	{
-		pipe_down[i].Update();
-		pipe_up[i].Update();
+		for (int i = 0; i < 4; i++)
+		{
+			pipe_down[i].Update();
+			pipe_up[i].Update();
 
-		window.Render(pipe_down[i]);
-		window.Render(pipe_up[i]);
+			window.Render(pipe_down[i]);
+			window.Render(pipe_up[i]);
+		}
 	}
-	//window.Render(bird);//54, 96
+
+	//UI main menu
+	if (!start)
+	{
+		window.Render(UI_GetReadyTexture, Vector(25.f, 50.f));
+		window.Render(UI_BirdTexture, Vector(55.f, 100.f));
+		window.Render(UI_HandTexture, Vector(60.f, 120.f));
+		window.Render(UI_TapTexture, Vector(73.f, 130.f));
+
+
+		bird.SetGravity(0.f, 0.f);
+		bird.Wave();
+	}
+	else
+	{
+		bird.SetGravity(0.f, 0.04f);
+		bird.Update();
+	}
 
 	for (num = 0; num < 2; num++)
 	{

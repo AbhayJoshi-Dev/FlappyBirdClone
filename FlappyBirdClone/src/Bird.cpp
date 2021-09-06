@@ -4,7 +4,7 @@ Bird::Bird(Vector p_pos, SDL_Texture* p_texture)
 	:Entity(p_pos, p_texture)
 {
 	gravity.SetX(0.0f);
-	gravity.SetY(0.04f);//0.009
+	gravity.SetY(0.04f);//0.04
 }
 
 void Bird::Update()
@@ -16,7 +16,6 @@ void Bird::Update()
 		velocity.SetY(1.2f);
 
 	SetPosition(Vector(25, GetPosition().GetY() + velocity.GetY()));
-
 
 	if (velocity.GetY() >= 1.0f && angle <= 450.0f)
 	{
@@ -46,4 +45,16 @@ void Bird::Fly()
 float Bird::GetAngle()
 {
 	return angle;
+}
+
+void Bird::SetGravity(float x, float y)
+{
+	gravity.SetX(x);
+	gravity.SetY(y);
+}
+
+void Bird::Wave()
+{
+	waveValue += 0.05f;
+	SetPosition(GetPosition() + Vector(0.f, std::sin(waveValue) / 2));
 }
