@@ -86,22 +86,22 @@ bool load = Init();
 
 
 Pipe pipe_down[4] = {
-	Pipe(Vector(70, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down), //down = 180 150
-	Pipe(Vector(140, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
-	Pipe(Vector(210, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
-	Pipe(Vector(280, utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down)
+	Pipe(Vector(70.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down), //down = 180 150
+	Pipe(Vector(140.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(210.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down),
+	Pipe(Vector(280.f, (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)), pipeTexture_down)
 };
 
 Pipe pipe_up[4] = {
-	Pipe(Vector(70, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up), //up = -50, -20
-	Pipe(Vector(140, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
-	Pipe(Vector(210, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
-	Pipe(Vector(280, utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up)
+	Pipe(Vector(70.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up), //up = -50, -20
+	Pipe(Vector(140.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(210.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up),
+	Pipe(Vector(280.f, (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)), pipeTexture_up)
 };
 
 Ground ground[2] = {
-	Ground(Vector(0, 200), groundTexture),
-	Ground(Vector(154, 200), groundTexture)
+	Ground(Vector(0.f, 200.f), groundTexture),
+	Ground(Vector(154.f, 200.f), groundTexture)
 };
 
 Bird bird(Vector(25, 96), birdtexture[0]);
@@ -111,19 +111,19 @@ void GameLoop()
 {
 
 	// pipe random generation
-	srand(time(0));
+	srand((unsigned int)time(0));
 
 	for (num = 0; num < 4; num++)
 	{
 		if (pipe_up[num].pipeCrossed)
 		{
-			pipe_up[num].SetPosition(Vector(pipe_up[num].GetPosition().GetX(), utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)));
+			pipe_up[num].SetPosition(Vector(pipe_up[num].GetPosition().GetX(), (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)));
 			pipe_up[num].pipeCrossed = false;
 		}
 
 		if (pipe_down[num].pipeCrossed)
 		{
-			pipe_down[num].SetPosition(Vector(pipe_down[num].GetPosition().GetX(), utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)));
+			pipe_down[num].SetPosition(Vector(pipe_down[num].GetPosition().GetX(), (float)utils::RandomValues(PIPE_DOWN_MAX_Y, PIPE_DOWN_MIN_Y)));
 			pipe_down[num].pipeCrossed = false;
 		}
 	}
@@ -224,7 +224,6 @@ void GameLoop()
 
 int main(int argc, char* args[])
 {
-
 	while (gameRunning)
 	{
 		GameLoop();
