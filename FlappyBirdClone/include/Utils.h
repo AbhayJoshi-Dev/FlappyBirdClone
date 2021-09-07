@@ -49,16 +49,27 @@ namespace utils
 
 		return sqrt(dx * dx + dy * dy);
 	}
-                                  // 17          33         
+
 	inline bool RangeIntersect(float min0, float max0, float min1, float max1)
 	{
 		return  std::max(min0, max0) >= std::min(min1, max1) && 
 			std::min(min0, max0) <= std::max(min1, max1);
 	}
 
-	inline bool isCollide(Entity r1, Entity r2)
+	inline bool IsCollide(Entity r1, Entity r2)
 	{
 		return RangeIntersect(r1.GetPosition().GetX(), r1.GetPosition().GetX() + (float)r1.GetCurrentFrame().w, r2.GetPosition().GetX(), r2.GetPosition().GetX() + (float)r2.GetCurrentFrame().w) &&
 			RangeIntersect(r1.GetPosition().GetY(), r1.GetPosition().GetY() + (float)r1.GetCurrentFrame().h, r2.GetPosition().GetY(), r2.GetPosition().GetY() + (float)r2.GetCurrentFrame().h);
 	};
+
+	inline bool InRange(float min, float max, float value)
+	{
+		return value >= std::min(min, max) && value <= std::max(min, max);
+	}
+
+	inline bool IsCollide(float x, float y, Entity entity)
+	{
+		return InRange(entity.GetPosition().GetX(), entity.GetPosition().GetX() + entity.GetCurrentFrame().w, x) &&
+			InRange(entity.GetPosition().GetY(), entity.GetPosition().GetY() + entity.GetCurrentFrame().h, y);
+	}
 }

@@ -21,6 +21,7 @@ public:
 	void Update();
 	void Fly();
 	float GetAngle();
+	void SetAngle(float value);
 	void SetGravity(float x, float y);
 	void Wave();
 };

@@ -47,6 +47,11 @@ float Bird::GetAngle()
 	return angle;
 }
 
+void Bird::SetAngle(float value)
+{
+	angle = value;
+}
+
 void Bird::SetGravity(float x, float y)
 {
 	gravity.SetX(x);
