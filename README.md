@@ -2,7 +2,7 @@
 A clone of Flappy Bird created using C++ and [SDL2](https://www.libsdl.org/)
 ## Compiling
 ### Windows
-Create a folder name 'Dependencies' in the project's root directory, then download [SDL2](https://www.libsdl.org/download-2.0.php), [SDL_Image](https://www.libsdl.org/projects/SDL_image/) development libraries , Extract and paste them inside dependencies folder.
+Download [Dependencies](https://drive.google.com/file/d/1x8eNnCTF0dyMopb91tEMxEpNuzGUqnQB/view?usp=sharing) folder, Extract and paste the dependencies folder in the project's root directory.
 
 Execute the following command in the project's root directory:
 
