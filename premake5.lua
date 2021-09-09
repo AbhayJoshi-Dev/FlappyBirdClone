@@ -25,14 +25,16 @@ project "FlappyBirdClone"
     {
         "%{prj.location}/src/**.cpp",
         "%{prj.location}/include/**.h",
-        "%{prj.location}/res/**.png"
+        "%{prj.location}/res/gfx/**.png",
+        "%{prj.location}/res/font/**.ttf"
     }
 
     includedirs
     {
         "%{prj.location}/include",
         "%{wks.location}/Dependencies/SDL2/include",
-        "%{wks.location}/Dependencies/SDL2_image/include"
+        "%{wks.location}/Dependencies/SDL2_image/include",
+        "%{wks.location}/Dependencies/SDL2_ttf/include"
     }
 
     defines
@@ -44,13 +46,15 @@ project "FlappyBirdClone"
     {
         "SDL2",
         "SDL2main",
-        "SDL2_image"
+        "SDL2_image",
+        "SDL2_ttf"
     }
 
     libdirs
     {
         "%{wks.location}/Dependencies/SDL2/lib/x64",
-        "%{wks.location}/Dependencies/SDL2_image/lib/x64"
+        "%{wks.location}/Dependencies/SDL2_image/lib/x64",
+        "%{wks.location}/Dependencies/SDL2_ttf/lib/x64"
     }
 
     filter {"configurations:Debug"}
@@ -62,6 +66,7 @@ project "FlappyBirdClone"
         {
             "{COPYDIR} \"%{wks.location}/Dependencies/SDL2/lib/x64\" \"%{cfg.targetdir}\"",
             "{COPYDIR} \"%{wks.location}/Dependencies/SDL2_image/lib/x64\" \"%{cfg.targetdir}\"",
+            "{COPYDIR} \"%{wks.location}/Dependencies/SDL2_ttf/lib/x64\" \"%{cfg.targetdir}\"",
             "{COPYDIR} \"%{wks.location}/FlappyBirdClone/res\" \"%{cfg.targetdir}/res\""
 
         }

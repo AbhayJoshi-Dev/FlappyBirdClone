@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string>
 
 #include"RenderWindow.h"
 
@@ -98,6 +99,28 @@ void RenderWindow::RenderRotate(SDL_Texture* p_tex, Vector p_pos, float angle)
 	dst.h = src.h * multiplier;
 
 	SDL_RenderCopyEx(renderer, p_tex, &src, &dst, angle, NULL, SDL_FLIP_NONE);
+}
+
+void RenderWindow::RenderText(float x, float y, int score, TTF_Font* font, SDL_Color colour)
+{
+	SDL_Surface* surfaceMessage = TTF_RenderText_Blended(font, std::to_string(score).c_str(), colour);
+	SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = surfaceMessage->w;
+	src.h = surfaceMessage->h;
+
+	SDL_Rect dst;
+	dst.x = x;
+	dst.y = y;
+	dst.w = src.w;
+	dst.h = src.h;
+
+	SDL_RenderCopy(renderer, message, &src, &dst);
+	SDL_FreeSurface(surfaceMessage);
+	SDL_DestroyTexture(message);
 }
 
 void RenderWindow::Display()

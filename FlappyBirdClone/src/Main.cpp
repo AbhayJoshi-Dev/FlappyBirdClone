@@ -3,6 +3,7 @@
 #include<SDL_image.h>
 #include<stdlib.h>
 #include<time.h>
+#include<SDL_ttf.h>
 
 #include"RenderWindow.h"
 #include"Entity.h"
@@ -11,6 +12,11 @@
 #include"Bird.h"
 #include"Ground.h"
 #include"Button.h"
+
+
+bool Init();
+
+bool load = Init();
 
 RenderWindow window;
 
@@ -54,6 +60,13 @@ int num2 = 0;
 bool start = false;
 bool birdDead = false;
 int mouseX, mouseY;
+std::string scoreText;
+float scoreTime = 0.f;
+int currentScore = 0;
+
+SDL_Color white = { 255, 255, 255 };
+
+TTF_Font* font = TTF_OpenFont("res/font/font.ttf", 16);
 
 bool Init()
 {
@@ -62,6 +75,9 @@ bool Init()
 
 	if (!IMG_Init(IMG_INIT_PNG))
 		std::cout << "SDL_image has Failed. Error: " << IMG_GetError() << std::endl;
+
+	if (TTF_Init() == -1)
+		std::cout << "SDL_ttf has Failed. Error: " << TTF_GetError() << std::endl;
 
 	window.CreateWindow("Flappy Bird", SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -90,8 +106,6 @@ bool Init()
 
 	return true;
 }
-
-bool load = Init();
 
 float pipe_X_pos[4] = { 280.f, 350.f, 420.f, 490.f };
 
@@ -287,6 +301,18 @@ void GameLoop()
 		SDL_GetMouseState(&mouseX, &mouseY);
 	}
 
+	if (!birdDead && scoreTime >= 1.f && start)
+	{
+		scoreTime = 0;
+		currentScore++;
+	}
+	scoreTime += 0.01f;
+
+	if (start)
+	{
+		window.RenderText(200.f, 10.f, currentScore, font, white);
+	}
+
 	window.Display();
 
 	frameTicks = SDL_GetTicks() - startTicks;
@@ -302,6 +328,7 @@ int main(int argc, char* args[])
 	}
 
 	window.CleanUp();
+	TTF_Quit();
 	SDL_Quit();
 
 	return 0;
@@ -319,6 +346,7 @@ void MenuReset()
 		pipe_up[i].SetPosition(Vector(pipe_X_pos[i], (float)utils::RandomValues(PIPE_UP_MAX_Y, PIPE_UP_MIN_Y)));
 	}
 
+	currentScore = 0;
 	start = false;
 	birdDead = false;
 }
