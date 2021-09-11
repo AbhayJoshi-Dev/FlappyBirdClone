@@ -63,6 +63,7 @@ int mouseX, mouseY;
 std::string scoreText;
 float scoreTime = 0.f;
 int currentScore = 0;
+bool scoreOnce = false;
 
 SDL_Color white = { 255, 255, 255 };
 
@@ -130,7 +131,7 @@ Ground ground[2] = {
 
 Bird bird(Vector(25, 96), birdtexture[0]);
 
-Button OkButton(Vector(50.f, 200.f), UI_OKButtonTexture);
+Button OkButton(Vector(50.f, 150.f), UI_OKButtonTexture);
 
 void MenuReset();
 
@@ -169,7 +170,6 @@ void GameLoop()
 						}
 						if (utils::IsCollide((float)mouseX / 3, (float)mouseY / 3, OkButton) && birdDead)
 						{
-							std::cout << "Clicked!" << std::endl;
 							MenuReset();
 						}
 					}
@@ -207,6 +207,16 @@ void GameLoop()
 		}
 	}
 
+	if (scoreOnce)
+	{
+		scoreTime += 0.007f;
+		if (scoreTime >= 1.f)
+		{
+			scoreTime = 0.f;
+			scoreOnce = false;
+		}
+	}
+
 	//collision of bird and pipes
 	if (!birdDead)
 	{
@@ -220,6 +230,11 @@ void GameLoop()
 			{
 				birdDead = true;
 			}
+			else if (utils::IsTrigger(bird, pipe_down[num].GetPosition().GetX() + (pipe_down[num].GetCurrentFrame().w / 2.f), pipe_down[num].GetPosition().GetY(), 100.f) && !scoreOnce)
+			{
+				scoreOnce = true;
+				currentScore += 1;
+			}
 
 			if (num < 2)
 				if (utils::IsCollide(bird, ground[num]))
@@ -228,6 +243,7 @@ void GameLoop()
 				}
 		}
 	}
+
 
 	//render pipes
 	if (start)
@@ -300,13 +316,6 @@ void GameLoop()
 		window.Render(UI_GameOverTexture, Vector(25.f, 50.f));
 		SDL_GetMouseState(&mouseX, &mouseY);
 	}
-
-	if (!birdDead && scoreTime >= 1.f && start)
-	{
-		scoreTime = 0;
-		currentScore++;
-	}
-	scoreTime += 0.01f;
 
 	if (start)
 	{

@@ -62,6 +62,12 @@ namespace utils
 			RangeIntersect(r1.GetPosition().GetY(), r1.GetPosition().GetY() + (float)r1.GetCurrentFrame().h, r2.GetPosition().GetY(), r2.GetPosition().GetY() + (float)r2.GetCurrentFrame().h);
 	};
 
+	inline bool IsTrigger(Entity entity, float x, float y, float value)
+	{
+		return RangeIntersect(entity.GetPosition().GetX(), entity.GetPosition().GetX() + (float)entity.GetCurrentFrame().w, x, x + 1) &&
+			RangeIntersect(entity.GetPosition().GetY(), entity.GetPosition().GetY() + (float)entity.GetCurrentFrame().h, y, y - value);
+	}
+
 	inline bool InRange(float min, float max, float value)
 	{
 		return value >= std::min(min, max) && value <= std::max(min, max);
