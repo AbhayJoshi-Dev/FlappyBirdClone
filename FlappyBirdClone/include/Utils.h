@@ -23,7 +23,7 @@ namespace utils
 		if ((startTime - currentTime) > 1000.0f)
 		{
 			currentTime = startTime;
-			std::cout << "Frames per second (fps):" << fps << std::endl;
+			std::cout << fps << std::endl;
 			fps = 0;
 		}
 	}
