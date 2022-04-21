@@ -1,7 +1,15 @@
 # FlappyBirdClone
+
 A clone of Flappy Bird created using C++ and [SDL2](https://www.libsdl.org/)
+
+## Demo
+
+![](https://i.imgur.com/iadcUDO.gif)
+
 ## Compiling
+
 ### Windows
+
 Download [Dependencies](https://drive.google.com/file/d/1x8eNnCTF0dyMopb91tEMxEpNuzGUqnQB/view?usp=sharing) folder, Extract and paste the dependencies folder in the project's root directory.
 
 Execute the following command in the project's root directory:
