@@ -1,4 +1,4 @@
-# FlappyBirdClone
+# Flappy Bird Clone
 
 A clone of Flappy Bird created using C++ and [SDL2](https://www.libsdl.org/)
 
@@ -6,28 +6,37 @@ A clone of Flappy Bird created using C++ and [SDL2](https://www.libsdl.org/)
 
 ![](https://i.imgur.com/iadcUDO.gif)
 
-## Compiling
+## Build Instructions
 
-### Windows
+- Requirements
+  - Git
+  - CMake
+  - C++ Compiler
 
-Download [Dependencies](https://drive.google.com/file/d/1x8eNnCTF0dyMopb91tEMxEpNuzGUqnQB/view?usp=sharing) folder, Extract and paste the dependencies folder in the project's root directory.
+- Steps
 
-Execute the following command in the project's root directory:
+    ```cmd
+    # Clone this project along with submodules
+    $ git clone --recursive https://github.com/AbhayJoshi-Dev/FlappyBirdClone
 
-Enter 'build.bat action' where action is one of the following:
-```
-  compile           Will generate make file then compile using the make file.
-  clean             Remove all binaries and intermediate binaries and project files.
-  codelite          Generate CodeLite project files
-  gmake2            Generate GNU makefiles for Linux
-  vs2005            Generate Visual Studio 2005 project files
-  vs2008            Generate Visual Studio 2008 project files
-  vs2010            Generate Visual Studio 2010 project files
-  vs2012            Generate Visual Studio 2012 project files
-  vs2013            Generate Visual Studio 2013 project files
-  vs2015            Generate Visual Studio 2015 project files
-  vs2017            Generate Visual Studio 2017 project files
-  vs2019            Generate Visual Studio 2019 project files
-  xcode4            Generate Apple Xcode 4 project files
-```
-The compiled ``.exe`` is located in ``./bin``.
+    # Go to project root
+    $ cd FlappyBirdClone
+
+    # Pull SDL, SDL_image and SDL_ttf as submodule (if you cloned without --recursive flag)
+    $ git submodule update --init --recursive
+
+    # Create a folder for build
+    $ mkdir build
+
+    # Go to build folder
+    $ cd build
+
+    # Generate project files
+    $ cmake ..
+    ```
+
+- This will generate project files using default cmake generator for your platform. For example:
+
+  - on `Windows` with `Visual Studio` installed, it will generate a `.sln`
+  - on `Linux` with `make` installed, it will generate a `Makefile`
+  - on `Mac` with `xcode` installed, it will generate a `.xcodeproj`
