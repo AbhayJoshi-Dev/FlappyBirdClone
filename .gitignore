@@ -1,8 +1,10 @@
-bin/
-bin-int/
-Dependencies/
-.vs/
-**.sln
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
+build/
+bin/
+bin-int/
+.vscode/
+vendor/
+resources/
+**.sln
