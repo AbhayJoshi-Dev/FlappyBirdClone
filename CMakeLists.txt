@@ -26,7 +26,6 @@ add_custom_command(TARGET FLAPPY_BIRD POST_BUILD COMMAND ${CMAKE_COMMAND} -E cop
                     "${DEPS_DIR}/SDL/Debug/SDL2d.dll"
                     "${DEPS_DIR}/SDL_image/Debug/SDL2_imaged.dll"
                     "${DEPS_DIR}/SDL_ttf/Debug/SDL2_ttfd.dll"
-                    "${DEPS_DIR}/SDL_ttf/external/freetype/Debug/freetyped.dll"
                     $<TARGET_FILE_DIR:FLAPPY_BIRD>)
 
 add_custom_command(TARGET FLAPPY_BIRD POST_BUILD
